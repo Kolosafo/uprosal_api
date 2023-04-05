@@ -130,8 +130,15 @@ WSGI_APPLICATION = 'uprosal_api.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'd8npvl0krpmnvv',
+        'USER': 'kzogcsbrfsdnub',
+        'PASSWORD': 'ed9938326a2a55f58a6b7e43eea24cb193f91b7a3d1d13abc955c7f522b538e4',
+        'HOST': 'ec2-3-208-74-199.compute-1.amazonaws.com',
+        'PORT': '5432'
+
+        # 'ENGINE': 'django.db.backends.sqlite3',
+        # 'NAME': BASE_DIR / 'db.sqlite3'
     }
 }
 
