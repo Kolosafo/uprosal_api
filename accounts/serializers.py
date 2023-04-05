@@ -1,12 +1,12 @@
 from rest_framework import serializers
-from .models import User
+from .models import User, UserQouta
 
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ['id', 'first_name', 'last_name',
-                  'email', 'password']
+                  'email', 'work_category', 'password']
         extra_kwargs = {
             'password': {'write_only': True}
         }
@@ -18,3 +18,10 @@ class UserSerializer(serializers.ModelSerializer):
             instance.set_password(password)
         instance.save()
         return instance
+
+
+class QoutaSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = UserQouta
+        fields = ['user', 'qouta', 'status', 'date_updated']

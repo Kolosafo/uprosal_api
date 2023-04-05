@@ -27,8 +27,11 @@ account_status = (
     ("Not Activated", "Not Activated"),
     ("Trial", "Trial"),
     ("Trial Ended", "Trial Ended"),
-    ("Paid", "Paid"),
     ("Subscription Expired", "Subscription Expired"),
+
+    ("Pro", "Pro"),
+    ("Business", "Business"),
+    ("Enterprise", "Enterprise"),
 )
 
 
@@ -67,3 +70,17 @@ class Reset(models.Model):
 
     def __str__(self):
         return self.email
+
+
+class UserQouta(models.Model):
+    user = models.EmailField(max_length=255, unique=True)
+    status = models.CharField(
+        max_length=20, choices=account_status, blank=False, default="Trial")
+    qouta = models.FloatField(blank=False)
+    date_updated = models.DateTimeField(default=today, blank=True)
+
+    # UPDATE QOUTA AFTER 24HRS
+
+    def __str__(self):
+        # user_to_string = str(self.user)
+        return self.user

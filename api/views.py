@@ -1,6 +1,6 @@
 from django.shortcuts import render
-from .models import CoverLetter, Projects
-from .serializer import CoverLetterSerializer, ProjectSerializer
+from .models import CoverLetter, Projects, Skills
+from .serializer import CoverLetterSerializer, ProjectSerializer, SkillsSerializer
 from rest_framework.response import Response
 from django.http import JsonResponse, HttpResponse
 from rest_framework.decorators import api_view
@@ -29,6 +29,7 @@ def update_project(request):
     project = Projects.objects.get(id=id)
     project.title = request.data["title"]
     project.description = request.data["description"]
+    project.url = request.data["url"]
     project.save()
     return Response("success")
 
@@ -57,4 +58,30 @@ def save_projects(request):
 def delete_projects(request):
     project = Projects.objects.get(id=request.data['id'])
     project.delete()
+    return Response("success")
+
+
+@api_view(['POST'])
+def save_skills(request):
+    serializer = SkillsSerializer(data=request.data)
+    if serializer.is_valid():
+        serializer.save()
+    else:
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    return Response("success")
+
+
+@api_view(['GET'])
+def get_skills(request, email):
+    projects = Skills.objects.filter(user=email)
+    serializer = SkillsSerializer(projects, many=True)
+    return Response(serializer.data)
+
+
+@api_view(['POST'])
+def update_skills(request):
+    id = request.data['id']
+    skill = Skills.objects.get(id=id)
+    skill.skill = request.data["skills"]
+    skill.save()
     return Response("success")

@@ -7,7 +7,15 @@ class Projects(models.Model):
     user = models.EmailField(max_length=255, null=True)
     title = models.CharField(max_length=255)
     description = models.CharField(max_length=455)
-    url = models.URLField(max_length=200, blank=True)
+    url = models.CharField(max_length=200, blank=True, null=True)
+
+    def __str__(self):
+        return self.user
+
+
+class Skills(models.Model):
+    user = models.EmailField(max_length=255, null=True)
+    skill = models.CharField(max_length=3000)
 
     def __str__(self):
         return self.user
@@ -15,7 +23,8 @@ class Projects(models.Model):
 
 class CoverLetter(models.Model):
     user = models.EmailField(max_length=255, null=True)
-    letter = models.CharField(max_length=10000)
+    job_description = models.CharField(max_length=2000, null=True, blank=True)
+    cover_letter = models.CharField(max_length=10000)
 
     def __str__(self):
         return self.user

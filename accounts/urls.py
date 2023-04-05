@@ -16,6 +16,10 @@ urlpatterns = [
     path('login/', views.login, name="login"),
     path('token/', views.MyTokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
+    path('user_qouta/<str:user_email>', views.get_user_qouta, name="user_qouta"),
+    path('reduce_qouta/<str:user_email>', views.reduce_qouta, name="reduce_qouta"),
+
+    path('confirm_email/', views.confirm_email, name="confirm_email"),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
