@@ -20,6 +20,8 @@ urlpatterns = [
     path('reduce_qouta/<str:user_email>', views.reduce_qouta, name="reduce_qouta"),
 
     path('confirm_email/', views.confirm_email, name="confirm_email"),
+    path('forgot_password/', views.forgot_password, name="forgot_password"),
+    path('password_reset/', views.password_reset, name="password_reset"),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -168,19 +168,18 @@ def password_reset(request):
 
     reset_password = Reset.objects.filter(token=data['token']).first()
     if not reset_password:
-        raise exceptions.APIException("Invalid link!")
+        # raise exceptions.APIException("Invalid link!")
+        return Response("Invalid reset link")
 
     user = User.objects.filter(email=reset_password.email).first()
 
     if not user:
-        raise exceptions.APIException("User not found!")
+        return Response("This user doesn't exist")
 
     user.set_password(data['password'])
     user.save()
 
-    return Response({
-        'message': 'success'
-    })
+    return Response('success')
 
 
 def create_qouta(email, type):
@@ -220,7 +219,6 @@ def create_qouta(email, type):
 @api_view(['GET'])
 def get_user_qouta(request, user_email):
     user = user_email
-    print("DATA FOUND")
     user_qouta = UserQouta.objects.get(user=user)
 
     # UserQouta.objects.get(user=user_email)
@@ -230,7 +228,6 @@ def get_user_qouta(request, user_email):
     today = datetime.now(timezone.utc)
 
     time_difference = date_joined - today
-    print(time_difference)
 
     if user_account.status == "Not Activated":
 
@@ -261,7 +258,6 @@ def get_user_qouta(request, user_email):
         return Response("Subscription Expired")
     qouta_serializer = UserQouta.objects.filter(user=user_email)
     serializer = QoutaSerializer(qouta_serializer, many=True)
-    print(serializer)
     return Response(serializer.data)
 
 
@@ -355,7 +351,7 @@ def forgot_password(request):
     token = str(secrets.token_hex(10))
     Reset.objects.create(email=email, token=token)
 
-    url = 'http://localhost:3000/'+token
+    url = 'http://localhost:3000/resetpasswordconfirm/'+token
 
     send_mail("Password Reset", url, settings.EMAIL_HOST_USER, [
               email], fail_silently=False)
