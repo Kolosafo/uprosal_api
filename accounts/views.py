@@ -6,6 +6,7 @@ from rest_framework_simplejwt.views import TokenObtainPairView
 from .models import User, UserToken, Reset, UserQouta
 from .serializers import UserSerializer, QoutaSerializer
 from .auth import create_access_token, authenticate, create_refresh_token, decode_refresh_token
+from django.conf import settings
 import datetime
 from django.core.mail import send_mail
 import secrets
@@ -34,16 +35,16 @@ subscriptionTypes = {
     "Enterprise": "Enterprise"
 
 }
+API_KEY = settings.APIKEY
 
 
 @api_view(['POST'])
 def testEmail(request):
+    if not request.headers["Authorization"] == API_KEY:
+        return Response("NOT AUTHORIZED", status=status.HTTP_401_UNAUTHORIZED)
     data = request.data
-    message = data["message"]
-    user_email = data['email']
-    send_mail("Test SEND", message, settings.EMAIL_HOST_USER, [
-              'daudakolo16@gmail.com', 'daudakolo931@gmail.com'], fail_silently=False)
-    return Response("successs")
+    print(request.headers["Authorization"])
+    return Response("request")
 
 
 class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
@@ -67,6 +68,9 @@ class MyTokenObtainPairView(TokenObtainPairView):
 
 @api_view(['POST'])
 def register(request):
+    if not request.headers["Authorization"] == API_KEY:
+        return Response("NOT AUTHORIZED", status=status.HTTP_401_UNAUTHORIZED)
+
     data = request.data
 
     if data['password'] != data['password_confirm']:
@@ -77,7 +81,7 @@ def register(request):
 
         serializer.is_valid(raise_exception=True)
         serializer.save()
-        url = 'http://localhost:3000/confirm_email/'+data["email"]
+        url = 'https://uprosal.com/confirm_email/'+data["email"]
         send_mail("Confirm Your Email", url, settings.EMAIL_HOST_USER, [
             data["email"]], fail_silently=False)
     else:
@@ -89,6 +93,9 @@ def register(request):
 
 @api_view(['POST'])
 def login(request):
+    if not request.headers["Authorization"] == API_KEY:
+        return Response("NOT AUTHORIZED", status=status.HTTP_401_UNAUTHORIZED)
+
     email = request.data['email']
     password = request.data['password']
 
@@ -161,6 +168,8 @@ def logout(request):
 
 @api_view(['POST'])
 def password_reset(request):
+    if not request.headers["Authorization"] == API_KEY:
+        return Response("NOT AUTHORIZED", status=status.HTTP_401_UNAUTHORIZED)
     data = request.data
 
     if data['password'] != data['password_confirm']:
@@ -195,7 +204,7 @@ def create_qouta(email, type):
             raise exceptions
     except:
         print("Running exception")
-        user_account_status = User.objects.get(email=user_email)
+        user_account_status = User.objects.get(email=user_3mail)
         status = user_account_status.status
         print(user_account_status)
         if type == subscriptionTypes["trial"]:
@@ -218,6 +227,9 @@ def create_qouta(email, type):
 
 @api_view(['GET'])
 def get_user_qouta(request, user_email):
+    if not request.headers["Authorization"] == API_KEY:
+        return Response("NOT AUTHORIZED", status=status.HTTP_401_UNAUTHORIZED)
+
     user = user_email
     user_qouta = UserQouta.objects.get(user=user)
 
@@ -310,6 +322,9 @@ def update_user_qouta(request, user_email):
 
 @ api_view(['POST'])
 def reduce_qouta(request, user_email):
+    if not request.headers["Authorization"] == API_KEY:
+        return Response("NOT AUTHORIZED", status=status.HTTP_401_UNAUTHORIZED)
+
     user = user_email
     user = UserQouta.objects.get(user=user_email)
     user.qouta -= 1
@@ -319,6 +334,9 @@ def reduce_qouta(request, user_email):
 
 @ api_view(['POST'])
 def confirm_email(request):
+    if not request.headers["Authorization"] == API_KEY:
+        return Response("NOT AUTHORIZED", status=status.HTTP_401_UNAUTHORIZED)
+
     user_email = request.data['email']
     print("EMAIL", user_email)
 
@@ -347,11 +365,13 @@ def confirm_email(request):
 
 @api_view(['POST'])
 def forgot_password(request):
+    if not request.headers["Authorization"] == API_KEY:
+        return Response("NOT AUTHORIZED", status=status.HTTP_401_UNAUTHORIZED)
     email = request.data['email']
     token = str(secrets.token_hex(10))
     Reset.objects.create(email=email, token=token)
 
-    url = 'http://localhost:3000/resetpasswordconfirm/'+token
+    url = 'https://uprosal.com/resetpasswordconfirm/'+token
 
     send_mail("Password Reset", url, settings.EMAIL_HOST_USER, [
               email], fail_silently=False)

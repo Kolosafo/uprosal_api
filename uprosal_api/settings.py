@@ -186,10 +186,10 @@ AUTH_USER_MODEL = 'accounts.User'
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
+APIKEY = "16c176befc7c6615b88569eafcc45e42519e2b8097a5437e2fb7513264c4557deb1a75"
 
 CORS_ALLOWED_ORIGINS = [
-    'http://localhost:3000',
+    'https://uprosal.com',
 ]
 
 CORS_EXPOSE_HEADERS = ['Content-Type', 'X-CSRFToken']
