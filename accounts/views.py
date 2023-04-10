@@ -39,11 +39,9 @@ API_KEY = settings.APIKEY
 
 
 @api_view(['POST'])
-def testEmail(request):
-    if not request.headers["Authorization"] == API_KEY:
-        return Response("NOT AUTHORIZED", status=status.HTTP_401_UNAUTHORIZED)
-    data = request.data
-    print(request.headers["Authorization"])
+def testEmail(request, email):
+    send_mail("Password Reset", "Test This Link 2.0", settings.EMAIL_HOST_USER, [
+              email], fail_silently=False)
     return Response("request")
 
 
@@ -68,7 +66,7 @@ class MyTokenObtainPairView(TokenObtainPairView):
 
 @api_view(['POST'])
 def register(request):
-    if not request.headers["Authorization"] == API_KEY:
+    if not request.data["Authorization"] == API_KEY:
         return Response("NOT AUTHORIZED", status=status.HTTP_401_UNAUTHORIZED)
 
     data = request.data
@@ -93,7 +91,7 @@ def register(request):
 
 @api_view(['POST'])
 def login(request):
-    if not request.headers["Authorization"] == API_KEY:
+    if not request.data["Authorization"] == API_KEY:
         return Response("NOT AUTHORIZED", status=status.HTTP_401_UNAUTHORIZED)
 
     email = request.data['email']
@@ -138,6 +136,8 @@ def user(request):
 
 @api_view(['POST'])
 def refresh(request):
+    if not request.data["Authorization"] == API_KEY:
+        return Response("NOT AUTHORIZED", status=status.HTTP_401_UNAUTHORIZED)
     refresh_token = request.COOKIES.get('refresh_token')
     id = decode_refresh_token(refresh_token)
 
@@ -168,7 +168,7 @@ def logout(request):
 
 @api_view(['POST'])
 def password_reset(request):
-    if not request.headers["Authorization"] == API_KEY:
+    if not request.data["Authorization"] == API_KEY:
         return Response("NOT AUTHORIZED", status=status.HTTP_401_UNAUTHORIZED)
     data = request.data
 
@@ -204,7 +204,7 @@ def create_qouta(email, type):
             raise exceptions
     except:
         print("Running exception")
-        user_account_status = User.objects.get(email=user_3mail)
+        user_account_status = User.objects.get(email=user_email)
         status = user_account_status.status
         print(user_account_status)
         if type == subscriptionTypes["trial"]:
@@ -227,8 +227,6 @@ def create_qouta(email, type):
 
 @api_view(['GET'])
 def get_user_qouta(request, user_email):
-    if not request.headers["Authorization"] == API_KEY:
-        return Response("NOT AUTHORIZED", status=status.HTTP_401_UNAUTHORIZED)
 
     user = user_email
     user_qouta = UserQouta.objects.get(user=user)
@@ -322,7 +320,7 @@ def update_user_qouta(request, user_email):
 
 @ api_view(['POST'])
 def reduce_qouta(request, user_email):
-    if not request.headers["Authorization"] == API_KEY:
+    if not request.data["Authorization"] == API_KEY:
         return Response("NOT AUTHORIZED", status=status.HTTP_401_UNAUTHORIZED)
 
     user = user_email
@@ -334,7 +332,7 @@ def reduce_qouta(request, user_email):
 
 @ api_view(['POST'])
 def confirm_email(request):
-    if not request.headers["Authorization"] == API_KEY:
+    if not request.data["Authorization"] == API_KEY:
         return Response("NOT AUTHORIZED", status=status.HTTP_401_UNAUTHORIZED)
 
     user_email = request.data['email']
@@ -365,7 +363,7 @@ def confirm_email(request):
 
 @api_view(['POST'])
 def forgot_password(request):
-    if not request.headers["Authorization"] == API_KEY:
+    if not request.data["Authorization"] == API_KEY:
         return Response("NOT AUTHORIZED", status=status.HTTP_401_UNAUTHORIZED)
     email = request.data['email']
     token = str(secrets.token_hex(10))

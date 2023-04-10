@@ -28,14 +28,14 @@ SECRET_KEY = 'django-insecure-e3%1h19(19u#)m+r%6gh%q8c)dsbl^904sdyq)d#y3!q#qmr+k
 DEBUG = True
 
 EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_HOST_USER = 'kolosafo@gmail.com'
-EMAIL_HOST_PASSWORD = 'cbzhpdcymnxesfiy'
+EMAIL_HOST_USER = 'uprosal.services@gmail.com'
+EMAIL_HOST_PASSWORD = 'bcjcigxwyjciwilq'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 
 
-ALLOWED_HOSTS = ["*"]
+ALLOWED_HOSTS = ["https://uprosal-api.herokuapp.com/"]
 
 
 # Application definition
@@ -190,10 +190,11 @@ APIKEY = "16c176befc7c6615b88569eafcc45e42519e2b8097a5437e2fb7513264c4557deb1a75
 
 CORS_ALLOWED_ORIGINS = [
     'https://uprosal.com',
+    'http://localhost:3000'
 ]
 
 CORS_EXPOSE_HEADERS = ['Content-Type', 'X-CSRFToken']
-CORS_ORIGIN_ALLOW_ALL = True
+CORS_ORIGIN_ALLOW_ALL = False
 CORS_ALLOW_CREDENTIALS = True
 
 CSRF_USE_SESSIONS = False
@@ -205,3 +206,7 @@ SESSION_COOKIE_SAMESITE = None
 
 SECURE_BROWSER_XSS_FILTER = True
 SECURE_CONTENT_TYPE_NOSNIFF = True
+
+
+# GOOGLE AUTH CLIENT ID - 629010868594-3g7jvir2o3l93mj00h9h92s0t69u99a3.apps.googleusercontent.com
+# GOOGLE AUTH CLIENT SECRET - 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
