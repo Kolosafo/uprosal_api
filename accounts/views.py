@@ -8,7 +8,6 @@ from .serializers import UserSerializer, QoutaSerializer
 from .auth import create_access_token, authenticate, create_refresh_token, decode_refresh_token
 from django.conf import settings
 import datetime
-from django.core.mail import send_mail
 import secrets
 from django.http import Http404
 import json
@@ -218,7 +217,7 @@ def create_qouta(email, type):
             user_qouta = UserQouta.objects.create(user=user_email, qouta=50)
         elif type == subscriptionTypes["Enterprise"]:
             # COMPLETE USER QUOTA FOR TRIAL IS NOW $5.25
-            user_qouta = UserQouta.objects.create(user=user_email, qouta=80)
+            user_qouta = UserQouta.objects.create(user=user_email, qouta=110)
 
     return Response("QOUTA CREATED")
 
@@ -245,7 +244,7 @@ def get_user_qouta(request, user_email):
         # THIS IS SUFFICIENT AS A HANDLER
         return Response("Not Activated", status=status.HTTP_423_LOCKED)
 
-    elif user_account.status == "Trial" and time_difference.days <= -8:
+    elif user_account.status == "Trial" and time_difference.days <= -8 or user_qouta.status == "Trial" and time_difference.days <= -8:
         user_account.status = "Trial Ended"
         user_qouta.qouta = 0
         user_qouta.status = "Trial Ended"
@@ -375,3 +374,8 @@ def forgot_password(request):
               email], fail_silently=False)
 
     return Response("Success")
+
+
+@api_view(['POST'])
+def socialLoginAuth(request):
+    data = request.data

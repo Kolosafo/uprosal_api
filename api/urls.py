@@ -16,6 +16,7 @@ urlpatterns = [
     path('delete_project/', views.delete_projects, name="delete_project"),
     path('save_cover_letter/', views.save_cover_letter, name="save_cover_letter"),
     path('save_projects/', views.save_projects, name="save_projects"),
+    path('contact_us/', views.contactUs, name="contact_us"),
 
     path('save_skills/', views.save_skills, name="save_skills"),
     path('get_skills/<str:email>', views.get_skills, name="get_skills"),

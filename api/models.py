@@ -28,3 +28,13 @@ class CoverLetter(models.Model):
 
     def __str__(self):
         return self.user
+
+
+
+class ContactUs(models.Model):
+    name = models.CharField(max_length=100)
+    message = models.CharField(max_length=500)
+
+    def __str__(self):
+        # user_to_string = str(self.user)
+        return self.name

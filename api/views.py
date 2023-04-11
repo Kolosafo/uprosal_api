@@ -1,11 +1,12 @@
 from django.shortcuts import render
-from .models import CoverLetter, Projects, Skills
+from .models import CoverLetter, Projects, Skills, ContactUs
 from .serializer import CoverLetterSerializer, ProjectSerializer, SkillsSerializer
 from rest_framework.response import Response
 from django.http import JsonResponse, HttpResponse
 from rest_framework.decorators import api_view
 from rest_framework import exceptions, status
 from django.conf import settings
+from django.core.mail import send_mail
 
 # Create your views here.
 
@@ -88,3 +89,18 @@ def update_skills(request):
     skill.skill = request.data["skills"]
     skill.save()
     return Response("success")
+
+
+@api_view(['POST'])
+def contactUs(request):
+
+    data = request.data
+    name = data["name"]
+    email = data["email"]
+    message = data["message"]
+
+    send_mail(f"UprosaL Support From: {email}", message, settings.EMAIL_HOST_USER, [
+        "kolosafo@gmail.com"], fail_silently=True)
+
+    ContactUs.objects.create(name=name, message=message)
+    return JsonResponse("Success", safe=False, status=200)
