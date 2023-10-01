@@ -25,11 +25,11 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-e3%1h19(19u#)m+r%6gh%q8c)dsbl^904sdyq)d#y3!q#qmr+k'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_HOST_USER = 'uprosal.services@gmail.com'
-EMAIL_HOST_PASSWORD = 'bcjcigxwyjciwilq'
+EMAIL_HOST_PASSWORD = '******'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
@@ -133,7 +133,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'd8npvl0krpmnvv',
         'USER': 'kzogcsbrfsdnub',
-        'PASSWORD': 'ed9938326a2a55f58a6b7e43eea24cb193f91b7a3d1d13abc955c7f522b538e4',
+        'PASSWORD': '*****',
         'HOST': 'ec2-3-208-74-199.compute-1.amazonaws.com',
         'PORT': '5432'
 
@@ -186,7 +186,7 @@ AUTH_USER_MODEL = 'accounts.User'
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-APIKEY = "16c176befc7c6615b88569eafcc45e42519e2b8097a5437e2fb7513264c4557deb1a75"
+APIKEY = "*****"
 
 CORS_ALLOWED_ORIGINS = [
     'https://uprosal.com',
